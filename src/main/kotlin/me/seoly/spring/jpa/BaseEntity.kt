@@ -1,4 +1,4 @@
-package me.seoly.spring
+package me.seoly.spring.jpa
 
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
