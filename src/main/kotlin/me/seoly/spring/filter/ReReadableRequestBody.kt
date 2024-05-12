@@ -9,16 +9,10 @@ import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletRequestWrapper
 
-import java.io.BufferedReader
-import java.io.ByteArrayInputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-import org.apache.commons.lang3.StringUtils
-import org.zeroturnaround.zip.commons.IOUtils
+import java.io.*
 
 class ReReadableRequestBody: Filter {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
@@ -33,14 +27,14 @@ class ReReadableRequestBody: Filter {
 
         init {
             var characterEncoding = request.characterEncoding
-            if (StringUtils.isBlank(characterEncoding)) {
+            if (characterEncoding.isBlank()) {
                 characterEncoding = StandardCharsets.UTF_8.name()
             }
             this.encoding = Charset.forName(characterEncoding)
 
             try {
                 val inputStream: InputStream = request.inputStream
-                this.rawData = IOUtils.toByteArray(inputStream)
+                this.rawData = inputStreamToByteArray(inputStream)
             } catch (e: IOException) {
                 throw e
             }
@@ -73,6 +67,18 @@ class ReReadableRequestBody: Filter {
 
         override fun getRequest(): ServletRequest {
             return super.getRequest()
+        }
+
+        private fun inputStreamToByteArray(inputStream: InputStream): ByteArray {
+            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+            val outputStream = ByteArrayOutputStream()
+
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+
+            return outputStream.toByteArray()
         }
     }
 }

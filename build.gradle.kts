@@ -15,8 +15,6 @@ dependencies {
     implementation("org.hibernate.common:hibernate-commons-annotations:6.0.6.Final")
 
     compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("org.zeroturnaround:zt-zip:1.17")
 }
 
 tasks.test {
