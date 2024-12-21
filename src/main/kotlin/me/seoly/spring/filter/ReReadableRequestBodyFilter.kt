@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 
 import java.io.*
 
-class ReReadableRequestBody: Filter {
+class ReReadableRequestBodyFilter: Filter {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
 
         chain?.doFilter(RequestWrapper(request as HttpServletRequest), response)

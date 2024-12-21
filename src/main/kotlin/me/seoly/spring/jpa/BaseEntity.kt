@@ -14,10 +14,6 @@ abstract class BaseEntity: Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @Column
-    @ColumnDefault("false")
-    var deleted: Boolean = false
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnDefault("CURRENT_TIMESTAMP")
